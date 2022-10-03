@@ -1,0 +1,158 @@
+String str = "server=localhost;
+	port=3306;
+	database=bgmusic;
+	UID=root;
+	password=oracle";
+String query = "SELECT *FROM user 
+	WHERE username = '" + textBox1.Text + "' 
+	AND password = '" + textBox2.Text + "';";
+MySqlConnection con;
+con = new MySqlConnection(str);
+con.Open();
+MySqlCommand cmd = new MySqlCommand(query, con);
+MySqlDataReader dbr;
+dbr = cmd.ExecuteReader();
+
+
+String str = "server=localhost;port = 3306; database = bgmusic;UID = root;password = oracle";
+                String query = "SELECT *FROM produs;";
+                MySqlConnection con = new MySqlConnection(str);
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                MySqlDataReader dbr;
+                dbr = cmd.ExecuteReader();
+
+
+private void getData()
+        {
+            try  
+            {
+                String str = "server=localhost;port = 3306; database = bgmusic;UID = root;password = oracle";
+                String query = "SELECT *FROM produs;";
+                MySqlConnection con = new MySqlConnection(str);
+                con.Open();
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                MySqlDataReader dbr;
+                dbr = cmd.ExecuteReader();
+                if (dbr.HasRows)  
+                {  
+                    while (dbr.Read())  
+                    {  
+                        idprodus.Add(dbr["id_produs"].ToString());  
+                        categorie.Add(dbr["categorie"].ToString());  
+                        denumire.Add(dbr["denumire"].ToString());  
+                        greutate.Add(dbr["greutate"].ToString());  
+                        garantie.Add(dbr["garantie"].ToString());
+                        pret.Add(dbr["pret"].ToString());
+                    }  
+                }  
+                else  
+                {  
+                    MessageBox.Show("Data not found");  
+                }  
+  
+                con.Close();  
+            }  
+            catch (Exception err)  
+            {  
+                MessageBox.Show(err.ToString());  
+            }  
+        }
+private void updateDataGrid()
+        {
+            dataGridView1.Rows.Clear();
+            for (int i = 0; i < idprodus.Count; i++)
+            {
+                DataGridViewRow newRow = new DataGridViewRow();
+
+                newRow.CreateCells(dataGridView1);
+                newRow.Cells[0].Value = idprodus[i];
+                newRow.Cells[1].Value = categorie[i];
+                newRow.Cells[2].Value = denumire[i];
+                newRow.Cells[3].Value = greutate[i];
+                newRow.Cells[4].Value = garantie[i];
+                newRow.Cells[5].Value = pret[i];
+                dataGridView1.Rows.Add(newRow);
+            }
+        }
+
+getData();
+            if (idprodus.Count > 0)
+            {
+                updateDataGrid();
+            }
+            else
+            {
+                MessageBox.Show("Data not found");
+            }
+
+private void button2_Click(object sender, EventArgs e)
+        {
+            getData();
+            if (idprodus.Count > 0)
+            {
+                updateDataGrid();
+            }
+            else
+            {
+                MessageBox.Show("Data not found");
+            }
+        }
+
+"categorie","denumire","greutate","garantie","pret"
+
+
+private void button1_Click(object sender, EventArgs e)
+        {
+            
+            try
+            {
+                MySqlConnection con;
+                if (!(textBox1.Text == string.Empty))
+                {
+                    if (!(textBox2.Text == string.Empty))
+                    {
+                        String str = "server=localhost;port=3306;database=bgmusic;UID=root;password=oracle";
+                        String query = "SELECT *FROM user WHERE username = '" + textBox1.Text + "' and password = '" + textBox2.Text + "';";
+                        con = new MySqlConnection(str);
+                        con.Open();
+                        MySqlCommand cmd = new MySqlCommand(query, con);
+                        MySqlDataReader dbr;
+                        dbr = cmd.ExecuteReader();
+                        int count = 0;
+                        while (dbr.Read())
+                        {
+                            count = count + 1;
+                        }
+                        if (count == 1)
+                        {
+                            Form2 f2 = new Form2();
+                            f2.Show();
+                            Hide();
+                        }
+                        else if (count > 1)
+                        {
+                            MessageBox.Show("Username si parola duplicat", "ReLogin");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Username si parola incorecte", "ReLogin");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nu ați completat password", "ReLogin");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Nu ați completat username", "ReLogin");
+                }
+             //   con.Close();  
+            }
+            catch (Exception es)
+            {
+                MessageBox.Show(es.Message);
+            }
+            
+        }
